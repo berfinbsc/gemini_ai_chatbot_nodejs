@@ -25,11 +25,9 @@ app.get('/',  (req, res) => {
 app.post('/message', async (req, res) => {
   const { message, history } = req.body;
 
-  console.log(message);
-  console.log(history);
   const model = genAI.getGenerativeModel({ model: 'gemini-pro' });
   const chat = model.startChat({
-    history,
+    history:history,
     generationConfig: {
       maxOutputTokens: 100,
     },
@@ -38,8 +36,6 @@ app.post('/message', async (req, res) => {
   const result = await chat.sendMessage(message);
   const response = await result.response;
   const text = response.text();
-
-
   res.json({history});
 
 });
