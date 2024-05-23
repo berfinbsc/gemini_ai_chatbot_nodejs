@@ -1,6 +1,6 @@
 const express = require('express');
 const cors = require('cors'); // cors paketini import edin
-const { GoogleGenerativeAI } = require("@google/generative-ai");
+const { GoogleGenerativeAI, HarmCategory, HarmBlockThreshold } = require('@google/generative-ai');
 const app = express();
 app.use(cors({
   origin: '*'
@@ -27,11 +27,32 @@ console.log(history);
 console.log(message);
 
   const model = genAI.getGenerativeModel({ model: 'gemini-pro' });
+  
+  
+  const generationConfig = {
+    temperature: 0.9,
+    topK: 1,
+    topP: 1,
+    maxOutputTokens: 1000,
+  };
+
+  const safetySettings = [
+    {
+      category: HarmCategory.HARM_CATEGORY_HARASSMENT,
+      threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
+    },
+    // ... other safety settings
+  ];
+  
+  
+  
+  
+  
   const chat = model.startChat({
     history:history,
-    generationConfig: {
-      maxOutputTokens: 500,
-    },
+    generationConfig,
+    safetySettings,
+
   });
 
   
@@ -43,7 +64,7 @@ try {
   const text = response.text();
   console.log("text :: :: ",text);
   console.log("response :: ::",response);
-  res.send(text);
+  return res.send(text);
 
 } catch (error) {
   console.log(error);
