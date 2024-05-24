@@ -1,5 +1,5 @@
 const express = require('express');
-const cors = require('cors'); // cors paketini import edin
+const cors = require('cors'); 
 const { GoogleGenerativeAI, HarmCategory, HarmBlockThreshold } = require('@google/generative-ai');
 const app = express();
 app.use(cors({
@@ -33,7 +33,7 @@ console.log(message);
     temperature: 0.9,
     topK: 1,
     topP: 1,
-    maxOutputTokens: 1000,
+    maxOutputTokens: 2000,
   };
 
   const safetySettings = [
@@ -41,7 +41,6 @@ console.log(message);
       category: HarmCategory.HARM_CATEGORY_HARASSMENT,
       threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
     },
-    // ... other safety settings
   ];
   
   
